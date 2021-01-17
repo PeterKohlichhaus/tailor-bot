@@ -1,0 +1,39 @@
+const Discord = require('discord.js');
+const client = new Discord.Client();
+
+client.once('ready', () => {
+  console.log('Ready!');
+});
+
+const { prefix, token } = require('./config.json');
+const { playerConfig } = require('./player_config.json');
+//fix
+const player = {};
+
+client.login(`${token}`);
+
+player.atk = Math.floor(Math.random() * (playerConfig.atk.max - playerConfig.atk.min + 1)) + playerConfig.atk.min;
+player.def = Math.floor(Math.random() * (playerConfig.def.max - playerConfig.def.min + 1)) + playerConfig.def.min;
+
+
+client.on('message', message => {
+  if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+  const args = message.content.slice(prefix.length).trim().split(' ');
+  const command = args.shift().toLowerCase();
+
+  else if (command === 'lift') {
+    return message.channel.send('im lifting rn');
+  }
+
+  else if (command === 'attack') {
+    if (!args.length) {
+      return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+    }
+    else if (args[0] === 'test') {
+      return message.channel.send('attacked test');
+    }
+
+    message.channel.send(`First argument: ${args[0]}`);
+  }
+});
